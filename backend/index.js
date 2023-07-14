@@ -9,7 +9,7 @@ app.use(express.json())
 
 app.post('/search', [
   body('email').isEmail(),
-  body('number').optional().isInt(),
+  body('number').optional().isInt().isLength({ min: 6, max: 6 }),
 ], async (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -32,10 +32,10 @@ app.post('/search', [
 
     const filteredUsers = data.data.filter((user) => {
       console.log(user)
-        if (email && email !== user.email) {
+        if (email !== user.email) {
           return false;
         }
-        if (number && number !== user.number.toString()) {
+        if (number && number !== user.number) {
           return false;
         }
         return true;
